@@ -25,20 +25,26 @@ struct ContentView: View {
         }
         return addButton
     }
-        
+         
+    
     var body: some View {
         
         NavigationView {
             List {
                 ForEach(appleDevices, id: \.self) { device in
-                    Text(device)
+                    NavigationLink(destination: NaviDetailView(device)) {
+                        // 상세보기 구현 (Detail View)
+                        Image(systemName: "cloud.rain")
+                        Text(device)
+                    }
                 }
                 .onMove { (indexSet, index) in
                     self.appleDevices.move(fromOffsets: indexSet, toOffset: index)
                 }
                 .onDelete { indexSet in
                     self.appleDevices.remove(atOffsets: indexSet)
-                }
+                }.padding()
+            
             }
             .navigationBarTitle(Text("AppleDevices"))
             .navigationBarItems(leading: CreateAddButton(), trailing: EditButton())
@@ -46,6 +52,25 @@ struct ContentView: View {
         }
     }
 }
+
+struct NaviDetailView : View {
+    
+    private var device: String = ""
+    
+    init(_ device: String) {
+        self.device = device
+    }
+    
+    var body: some View {
+        VStack {
+            Image(systemName: "cloud.rain")
+            Divider()
+            Text(self.device)
+        }.padding()
+    }
+    
+}
+
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
