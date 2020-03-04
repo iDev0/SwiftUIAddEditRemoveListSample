@@ -9,8 +9,41 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State var appleDevices = ["iPad", "iPhone", "appleWatch", "iPods", "Macbook", "iMac"]
+    
+    func addRow() {
+        self.appleDevices.append("Macbook Pro")
+    }
+    
+    
+    func CreateAddButton() -> Button<Image> {
+        let addButton = Button(action: {
+            self.addRow()
+        }) {
+            Image(systemName: "plus")
+        }
+        return addButton
+    }
+        
     var body: some View {
-        Text("Hello, World!")
+        
+        NavigationView {
+            List {
+                ForEach(appleDevices, id: \.self) { device in
+                    Text(device)
+                }
+                .onMove { (indexSet, index) in
+                    self.appleDevices.move(fromOffsets: indexSet, toOffset: index)
+                }
+                .onDelete { indexSet in
+                    self.appleDevices.remove(atOffsets: indexSet)
+                }
+            }
+            .navigationBarTitle(Text("AppleDevices"))
+            .navigationBarItems(leading: CreateAddButton(), trailing: EditButton())
+
+        }
     }
 }
 
